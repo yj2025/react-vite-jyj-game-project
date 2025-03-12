@@ -1,9 +1,9 @@
-import { createBrowserRouter } from 'react-router-dom'
 import MainLayout from '@/ui/layouts/MainLayout'
+import BoardPage from '@/ui/pages/BoardPage'
+import BoardPagingPage from '@/ui/pages/BoardPagingPage'
 import LottoPage from '@/ui/pages/LottoPage'
 import RspPage from '@/ui/pages/RspPage'
-import BoardPage from '../ui/pages/BoardPage'
-import BoardPagingPage from '../ui/pages/BoardPagingPage'
+import { createBrowserRouter } from 'react-router-dom'
 
 const routes = [
   {
@@ -12,24 +12,19 @@ const routes = [
     loader: () => '로또',
     children: [
       {
-        path: '/',
-        loader: () => '로또',
+        path: '',
         element: <LottoPage />,
+        loader: () => '로또',
       },
       {
-        path: '/rsp',
-        loader: () => '가위바위보',
+        path: 'rsp',
         element: <RspPage />,
+        loader: () => '가위바위보',
       },
       {
         path: 'boards',
-        loader: () => '게시판',
-        element: <BoardPage />,
-      },
-      {
-        path: 'boards',
-        loader: () => '게시판',
         element: <BoardPagingPage />,
+        loader: () => '게시판',
       },
     ],
   },

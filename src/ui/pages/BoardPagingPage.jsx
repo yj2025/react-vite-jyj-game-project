@@ -1,9 +1,7 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import styled from 'styled-components'
 import Pagination from 'react-js-pagination'
-
-//https://sample.bmaster.kro.kr/contacts?pageno=1&pagesize=10
 
 const BoardPagingPage = () => {
   const initPaging = {
@@ -16,27 +14,43 @@ const BoardPagingPage = () => {
 
   const [paging, setPaging] = useState(initPaging)
 
-  const getContacts = async (pageNum, pageSize) => {
-    await axios
+  const getContacts = (pageNum = 1, pageSize) => {
+    axios
       .get(`https://sample.bmaster.kro.kr/contacts?pageno=${pageNum}&pagesize=${pageSize}`)
       .then((response) => {
+        console.log(response)
+
+        //setContacts(response.data.contacts)
+
         setPaging((prev) => ({
           ...prev,
           data: response.data.contacts,
           totalCount: response.data.totalcount,
+          activePage: pageNum,
         }))
 
+        // console.log(paging)
+        // setPaging({
+        //   activePage: 1, // 현재 페이지
+        //   limit: 10, // 한 페이지 당 보여질 게시물 갯수
+        //   pageCount: 10, //    1 ,2,3,4,5,6,7,8,9,10
+        //   totalCount: 0, //총갯수
+        //   data: conntacts, // 데이타
+        // })
         console.log(paging)
       })
       .catch((error) => console.log(error))
   }
-
+  //렌더링 할때 한번만 타는 구문
   useEffect(() => {
+    //`https://sample.bmaster.kro.kr/contacts?pageno=3&pagesize=10`
     getContacts(3, 10)
   }, [])
 
-  const deleteBoard = (e) => {
-    const { name, value } = e.target
+  //<button className='btn btn-success' value={contact.no} onClick={deleteBoard}>
+
+  const deleteBoard = (event) => {
+    const { name, value } = event.target
     console.log(name + '::' + value)
 
     let filterdContacts = paging.data.filter((contact) => {
@@ -53,24 +67,24 @@ const BoardPagingPage = () => {
   const handlePageChange = (pageNumber) => {
     console.log(pageNumber)
     console.log(typeof pageNumber)
-
+    getContacts(pageNumber)
     //setPaging((prev) => ({ ...prev, activePage: pageNumber }))
 
-    axios
-      .get(`https://sample.bmaster.kro.kr/contacts?pageno=${pageNumber}&pagesize=${paging.pageCount}`)
-      .then((res) => {
-        console.log(res)
+    // axios
+    //   .get(`https://sample.bmaster.kro.kr/contacts?pageno=${pageNumber}&pagesize=${paging.pageCount}`)
+    //   .then((res) => {
+    //     console.log(res)
 
-        setPaging((prev) => ({
-          ...prev,
-          data: res.data.contacts,
-          totalCount: res.data.totalcount,
-          activePage: pageNumber,
-        }))
+    //     setPaging((prev) => ({
+    //       ...prev,
+    //       data: res.data.contacts,
+    //       totalCount: res.data.totalcount,
+    //       activePage: pageNumber,
+    //     }))
 
-        console.log(paging)
-      })
-      .catch((error) => console.log(error))
+    //     console.log(paging)
+    //   })
+    //   .catch((error) => console.log(error))
   }
 
   return (
@@ -117,7 +131,6 @@ const BoardPagingPage = () => {
                         <td>{contact.no}</td>
                         <td>{contact.name}</td>
                         <td>{contact.tel}</td>
-
                         <td>{contact.address}</td>
                         <td>
                           <img src={contact.photo} alt='' />
@@ -142,6 +155,7 @@ const BoardPagingPage = () => {
                 onChange={handlePageChange}
               ></Pagination>
             </PaginationBox>
+
             <hr />
           </div>
         </div>
@@ -193,4 +207,5 @@ const PaginationBox = styled.div`
     color: blue;
   }
 `
+
 export default BoardPagingPage
