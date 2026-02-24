@@ -2,29 +2,40 @@ import React, { useState } from 'react'
 import LottoBall from '../components/lotto/LottoBall'
 
 const LottoPage = () => {
-  const setNumbers = () => {
+  // 로또 번호 생성 함수 (1~45, 중복 제거{Set}, 정렬 포함)
+  const generateLottoNumbers = () => {
     const lottoSet = new Set()
 
     while (lottoSet.size < 6) {
-      let num = Math.floor(Math.random() * 45) + 1
+      const num = Math.floor(Math.random() * 45) + 1
       lottoSet.add(num)
     }
 
-    console.log(lottoSet)
-    return Array.from(lottoSet)
+    // Set → Array 변환 후 오름차순 정렬
+    return [...lottoSet].sort((a, b) => a - b)
   }
 
-  const [nums, setNums] = useState(setNumbers())
+  // lazy 초기화
+  const [nums, setNums] = useState(() => generateLottoNumbers())
 
-  const onClick = () => {
-    setNums(setNumbers())
+  // 재추첨
+  const handleRegenerate = () => {
+    setNums(generateLottoNumbers())
   }
 
   return (
-    <div className='container'>
-      <div onClick={onClick} className='row mt-sm-5'>
-        {nums && nums.map((num) => <LottoBall lottoNum={num}></LottoBall>)}
+    <div className="container text-center mt-5">
+      <h2 className="mb-4">🎰 Lotto Generator</h2>
+
+      <div className="row justify-content-center mb-4">
+        {nums.map((num) => (
+          <LottoBall key={num} lottoNum={num} />
+        ))}
       </div>
+
+      <button className="btn btn-primary" onClick={handleRegenerate}>
+        재추첨
+      </button>
     </div>
   )
 }
