@@ -1,12 +1,34 @@
-# React + Vite
+### Lotto + RSP + BBS (Pagination)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite 기반으로 제작한 미니 프로젝트입니다.
+기본적인 React 상태관리, 컴포넌트 분리, 페이지네이션 로직 구현을 목표로 만들었습니다.
 
-Currently, two official plugins are available:
+#### 1. Lotto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 1~45 랜덤 숫자 6개 생성
+- 중복 제거 처리
+- 재추첨 기능 구현
+- 정렬 기능 포함
 
-## Expanding the ESLint configuration
+* useState / 배열 중복 제거 로직/ 랜덤 알고리즘
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+#### 2. RSP
+
+- 사용자 선택 vs 컴퓨터 랜덤 선택
+- 승/패/무 로직 구현
+- 점수 누적 기능
+
+* 조건 분기 처리 / 상태 기반 UI 변경 / 이벤트 핸들링
+
+#### 3. BBS
+
+- 게시글 목록 출력
+- 페이지네이션 기능 구현
+
+* 배열 슬라이싱 / 페이지 계산 로직 / 컴포넌트 분리 설계
+
+#### 기술 스택
+- React
+- JavaScript (ES6+)
+- Vite
+- CSS
