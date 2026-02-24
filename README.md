@@ -1,37 +1,31 @@
-### 1. 프로젝트 생성및 기본 환경 설정
-
-> npm create vite@latest 프로젝틈여
+### 1. 프로젝트 생성 및 기본 환경 설정
+> npm create vite@latest 프로젝트명
 
 ### 2. 라이브러리 다운로드 후 실행
-
 > npm i
 > npm run dev
 
 ### 3. 프리티어 설정
-
 {
-"printWidth": 120, // 한 줄의 최대 길이를 120자로 제한
-"tabWidth": 2, // 들여쓰기 크기를 2칸으로 설정
-"trailingComma": "all", // 모든 곳에서 마지막 요소 뒤에 쉼표 추가
-"singleQuote": true, // 문자열에 작은 따옴표(') 사용
-"jsxSingleQuote": true, // JSX에서 작은 따옴표(') 사용
-"semi": false // 세미콜론을 사용하지 않음
+    "printWidth": 120,      // 한 줄 최대 길이 120자 제한
+    "tabWidth": 2,          // 들여쓰기 2칸 설정
+    "trailingComma": "all", // 모든 곳에서 마지막 요소 뒤에 쉼표 추가
+    "singleQuote": true,    // 문자열에 작은 따옴표(') 사용
+    "jsxSingleQuote": true, // JSX에서 작은 따옴표(') 사용
+    "semi": false           // 세미콜론을 사용하지 않음
 }
 
 ### 4. eslint 문법 아래와 같이 수정
-
-    사용하지 않는 변수및 모듈 빨간줄에러를 경고로 처리
+    # 사용하지 않는 변수 및 모듈 빨간줄 에러를 경고로 처리
     eslint.config.js
 
     // 'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z]' }],
     'no-unused-vars': 'warn',
 
 ### 5. 부트스트랩 다운로드
-
     "bootstrap": "^5.3.3"
 
-### 6. 개발위한 기본파일 정리
-
+### 6. 기본파일 정리
 패스 앨리어스 설정(@)
 jsonconfig.json => vs code 를 위한 설정(절대 경로 패스를 설정하기 위해 주로 설정)
 
