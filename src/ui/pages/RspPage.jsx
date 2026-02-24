@@ -9,83 +9,103 @@ const RspPage = () => {
     {
       id: 1,
       username: '당신',
-      arrRsp: ['가위', '바위', '보'],
-      img: 'https://taegon.kim/wp-content/uploads/2018/05/image-5.png',
+      arrRsp: [],
+      img: rock,
     },
     {
       id: 2,
       username: '심판',
       arrRsp: [],
-      img: 'https://taegon.kim/wp-content/uploads/2018/05/image-5.png',
+      img: rock,
     },
     {
       id: 3,
       username: '컴퓨터',
-      arrRsp: ['랜덤생성'],
-      img: 'https://taegon.kim/wp-content/uploads/2018/05/image-5.png',
+      arrRsp: [],
+      img: rock,
     },
   ])
 
-  const handleClick = (e) => {
-    console.log(e.target.innerText)
+  const [score, setScore] = useState({
+    win: 0,
+    lose: 0,
+    draw: 0,
+  })
 
+  const handleClick = (choice) => {
     const rspArr = ['가위', '바위', '보']
-    const imgArr = [scissor, rock, paper] //이미지 처리
+    const imgArr = [scissor, rock, paper]
 
-    //가위바위보 버튼을 누르면 숫자(0,1,2)숫자로 변환
-    let user_rsp = rspArr.indexOf(e.target.innerText)
+    const userIndex = rspArr.indexOf(choice)
+    const comIndex = Math.floor(Math.random() * 3)
 
-    //컴퓨터 램덤 생성(0~2)
-    let com_rsp = Math.floor(Math.random() * 3)
+    const result = getResult(choice, rspArr[comIndex])
 
-    //결과 스트링
-    let result = getResult(e.target.innerText, rspArr[com_rsp])
+    // 깊은 복사 (객체까지 복사)
+    const newPlayers = players.map(player => ({ ...player }))
 
-    //화면갱신을 위한 설정
-    let copyPlayers = [...players]
+    newPlayers[0].arrRsp = [choice]
+    newPlayers[1].arrRsp = [result]
+    newPlayers[2].arrRsp = [rspArr[comIndex]]
 
-    copyPlayers[1].arrRsp = [result]
-    copyPlayers[2].arrRsp = [rspArr[com_rsp]]
+    newPlayers[0].img = imgArr[userIndex]
+    newPlayers[2].img = imgArr[comIndex]
 
-    //이미지 셋팅
-    copyPlayers[0].img = imgArr[user_rsp]
-    copyPlayers[2].img = imgArr[com_rsp]
+    setPlayers(newPlayers)
 
-    setPlayers(copyPlayers)
+    // 점수 누적
+    if (result === '당신이 이겼습니다.') {
+      setScore(prev => ({ ...prev, win: prev.win + 1 }))
+    } else if (result === '당신이 졌습니다') {
+      setScore(prev => ({ ...prev, lose: prev.lose + 1 }))
+    } else {
+      setScore(prev => ({ ...prev, draw: prev.draw + 1 }))
+    }
   }
 
-  function getResult(you, computer) {
-    let result = '비겼습니다'
+  const getResult = (you, computer) => {
+    if (you === computer) return '비겼습니다'
 
-    if (you == computer) return '비겼습니다'
-
-    if (you == '가위') {
-      if (computer == '바위') result = '당신이 졌습니다'
-
-      if (computer == '보') result = '당신이 이겼습니다.'
+    if (
+      (you === '가위' && computer === '보') ||
+      (you === '바위' && computer === '가위') ||
+      (you === '보' && computer === '바위')
+    ) {
+      return '당신이 이겼습니다.'
     }
 
-    if (you == '바위') {
-      if (computer == '보') result = '당신이 졌습니다'
-
-      if (computer == '가위') result = '당신이 이겼습니다.'
-    }
-
-    if (you == '보') {
-      if (computer == '가위') result = '당신이 졌습니다'
-
-      if (computer == '바위') result = '당신이 이겼습니다.'
-    }
-
-    return result
+    return '당신이 졌습니다'
   }
 
   return (
     <main>
-      <div className='container mt-5'>
-        <div className='row'>
-          {players && players.map((player) => <RspCard player={player} onClick={handleClick}></RspCard>)}
+      <div className="container mt-5 text-center">
+        <h2>✊ 가위바위보</h2>
+
+        <div className="mb-4">
+          {['가위', '바위', '보'].map(item => (
+            <button
+              key={item}
+              className="btn btn-outline-primary m-2"
+              onClick={() => handleClick(item)}
+            >
+              {item}
+            </button>
+          ))}
         </div>
+
+        <div className="row">
+          {players.map(player => (
+            <RspCard
+              key={player.id}
+              player={player}
+            />
+          ))}
+        </div>
+
+        <h4 className="mt-4">
+          🏆 승: {score.win} / ❌ 패: {score.lose} / 🤝 무: {score.draw}
+        </h4>
       </div>
     </main>
   )
